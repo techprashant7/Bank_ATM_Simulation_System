@@ -24,7 +24,7 @@ public class EmbeddedTomcat {
                 additionWebInfClasses.getAbsolutePath(), "/"));
         ctx.setResources(resources);
         
-        System.out.println("Starting server on http://localhost:8080");
+        System.out.println("Starting server on http://localhost:8081");
         tomcat.start();
         tomcat.getServer().await();
     }
