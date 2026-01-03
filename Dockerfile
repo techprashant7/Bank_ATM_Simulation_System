@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y wget unzip && \
     apt-get clean
 
 # Copy WAR file to Tomcat webapps
-RUN cp target/*.war /opt/tomcat/webapps/ROOT.war
+RUN cp target/hibernate-atm.war /opt/tomcat/webapps/ROOT.war
 
 # Expose port
 EXPOSE 8081
