@@ -19,8 +19,14 @@ RUN apt-get update && apt-get install -y wget unzip && \
     rm apache-tomcat-9.0.85.tar.gz && \
     apt-get clean
 
+# Debug: Check if WAR file exists
+RUN ls -la target/
+
 # Copy WAR file to Tomcat webapps
 RUN cp target/hibernate-atm.war /opt/tomcat/webapps/ROOT.war
+
+# Debug: Verify deployment
+RUN ls -la /opt/tomcat/webapps/
 
 # Expose port
 EXPOSE 8081
