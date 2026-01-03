@@ -11,7 +11,7 @@ COPY . .
 RUN ./mvnw clean package || mvn clean package
 
 # Expose port (Render uses PORT env variable)
-EXPOSE 8080
+EXPOSE 8081
 
 # Start the app
 CMD ["sh", "-c", "java -jar target/*.jar"]
