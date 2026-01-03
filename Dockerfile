@@ -1,17 +1,28 @@
-# ---------- BUILD STAGE ----------
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use Java 17 with Maven and Tomcat
+FROM maven:3.9.4-openjdk-17
 
+# Set working directory
 WORKDIR /app
+
+# Copy project files
 COPY . .
-RUN mvn clean package -DskipTests
 
-# ---------- RUN STAGE ----------
-FROM eclipse-temurin:17-jdk
+# Build the project
+RUN mvn clean package
 
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+# Install Tomcat
+RUN apt-get update && apt-get install -y wget unzip && \
+    wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.85/bin/apache-tomcat-9.0.85.tar.gz && \
+    tar -xzf apache-tomcat-9.0.85.tar.gz && \
+    mv apache-tomcat-9.0.85 /opt/tomcat && \
+    rm apache-tomcat-9.0.85.tar.gz && \
+    apt-get clean
 
-# Render sets PORT automatically
-EXPOSE 8080
+# Copy WAR file to Tomcat webapps
+RUN cp target/*.war /opt/tomcat/webapps/ROOT.war
 
-CMD ["sh", "-c", "java -jar app.jar"]
+# Expose port
+EXPOSE 8081
+
+# Start Tomcat
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
